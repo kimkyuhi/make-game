@@ -1,8 +1,6 @@
 from pico2d import *
 import threading
 
-class world_grass
-
 def thread_run():
     global charge
     global dir
@@ -66,7 +64,7 @@ def handle_running_events():
 
     pass
 
-open_canvas()
+open_canvas(800, 480)
 character_right = load_image('mario_right_walk.png')
 character_left = load_image('mario_left_walk.png')
 character_right_stop = load_image('mario_right_stop.png')
@@ -75,11 +73,12 @@ character_right_run = load_image('mario_right_run.png')
 character_left_run = load_image('mario_left_run.png')
 character_right_jump = load_image('mario_right_jump.png')
 character_left_jump = load_image('mario_left_jump.png')
+World1 = load_image('world1-1.png')
 
 running = True
 x = 0
 y = 75
-floar = 75
+floar = 45
 walk_frame = 0
 run_frame = 0
 dir = 0 # -1 left +1 right 0 stop
@@ -91,27 +90,27 @@ t = 0.0
 jump_start = x, y
 jump_middle = x, y
 jump_last = x, y
+
 while running:
     clear_canvas()
-
-
+    World1.clip_draw(0, 5, 800, 480, 400, 240)
     # 정지모션
     if stop == 1:
-        character_right_stop.clip_draw(0, 2, 20, 35, x, y)
+        character_right_stop.clip_draw(0, 2, 20, 35, x, floar)
     elif stop == -1:
-        character_left_stop.clip_draw(0, 2, 20, 35, x, y)
+        character_left_stop.clip_draw(0, 2, 20, 35, x, floar)
     else:# walk or run and jump.
         if jump != 1:
             if dir > 0:
                 if charge == 6:
-                    character_right_run.clip_draw(run_frame * 19, 2, 19, 35, x, y)
+                    character_right_run.clip_draw(run_frame * 19, 2, 19, 35, x, floar)
                 else:
-                    character_right.clip_draw(walk_frame * 20, 2, 20, 35, x, y)
+                    character_right.clip_draw(walk_frame * 20, 2, 20, 35, x, floar)
             elif dir < 0:
                 if charge == -6:
-                    character_left_run.clip_draw(run_frame * 20, 2, 20, 35, x, y)
+                    character_left_run.clip_draw(run_frame * 20, 2, 20, 35, x, floar)
                 else:
-                    character_left.clip_draw(walk_frame * 20, 2, 20, 35, x, y)
+                    character_left.clip_draw(walk_frame * 20, 2, 20, 35, x, floar)
         else:
             t = i / 100
             x = (2 * t ** 2 - 3 * t + 1) * jump_start[0] + (-4 * t ** 2 + 4 * t) * jump_middle[0] + (2 * t ** 2 - t) * jump_last[0]
