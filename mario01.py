@@ -58,15 +58,16 @@ def handle_running_events():
                     dir -= 2
                 thread_run()
             elif event.key == SDLK_UP:
-                jump = 1
-                if dir > 0:
-                    jump_start = x, floar
-                    jump_middle = x + 20, floar + 40
-                    jump_last = x + 40, floar
-                elif dir < 0:
-                    jump_start = x, floar
-                    jump_middle = x - 20, floar + 40
-                    jump_last = x - 40, floar
+                if jump != 1:
+                    jump = 1
+                    if dir > 0:
+                        jump_start = x, floar
+                        jump_middle = x + 20, floar + 40
+                        jump_last = x + 40, floar
+                    elif dir < 0:
+                        jump_start = x, floar
+                        jump_middle = x - 20, floar + 40
+                        jump_last = x - 40, floar
             elif event.key == SDLK_ESCAPE:
                 running = False
 
@@ -78,6 +79,11 @@ def handle_running_events():
             elif event.key == SDLK_LEFT:
                 dir += 1
                 stop = -1
+            elif event.key ==SDLK_UP:
+                x, y = jump_last
+
+
+
 
     pass
 
@@ -107,7 +113,7 @@ t = 0.0
 jump_start = x, y
 jump_middle = x, y
 jump_last = x, y
-Qboxes = [Box() for i in range(1, 3+1)]
+Qboxes = [Box() for i in range(1, 2+1)]
 
 while running:
     clear_canvas()
