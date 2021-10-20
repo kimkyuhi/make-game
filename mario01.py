@@ -11,7 +11,8 @@ def thread_run():
     elif dir == -1 and charge > -6:
         charge -= 1
 
-    if dir == 0:
+    if dir == 0 or stop != 0:
+        charge = 0
         run_timer.cancel()
 
 
@@ -29,14 +30,23 @@ def handle_running_events():
     for event in events:
         if event.type == SDL_QUIT:
             running = False
+            dir = 0
+            stop = 1
+            thread_run()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_RIGHT:
                 stop = 0
-                dir += 1
+                if dir == 0:
+                    dir += 1
+                else:
+                    dir += 2
                 thread_run()
             elif event.key == SDLK_LEFT:
                 stop = 0
-                dir -= 1
+                if dir == 0:
+                    dir -= 1
+                else:
+                    dir -= 2
                 thread_run()
             elif event.key == SDLK_UP:
                 jump = 1
@@ -53,14 +63,13 @@ def handle_running_events():
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:
+                print('여기계속돌아?')
+                dir -= 1
                 stop = 1
-                dir = 0
-                charge = 0
 
             elif event.key == SDLK_LEFT:
+                dir += 1
                 stop = -1
-                dir = 0
-                charge = 0
 
     pass
 
@@ -76,7 +85,7 @@ character_left_jump = load_image('mario_left_jump.png')
 World1 = load_image('world1-1.png')
 
 running = True
-x = 0
+x = 100
 y = 75
 floar = 45
 walk_frame = 0
@@ -95,9 +104,9 @@ while running:
     clear_canvas()
     World1.clip_draw(0, 5, 800, 480, 400, 240)
     # 정지모션
-    if stop == 1:
+    if stop == 1: #and dir == 0:
         character_right_stop.clip_draw(0, 2, 20, 35, x, floar)
-    elif stop == -1:
+    elif stop == -1: #and dir == 0:
         character_left_stop.clip_draw(0, 2, 20, 35, x, floar)
     else:# walk or run and jump.
         if jump != 1:
@@ -129,6 +138,7 @@ while running:
     handle_running_events()
     walk_frame = (walk_frame + 1) % 5
     run_frame = (run_frame + 1) % 3
+    print(dir, charge)
     x += dir * 5 + charge
     delay(0.05)
 
