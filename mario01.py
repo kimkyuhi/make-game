@@ -47,14 +47,14 @@ def handle_running_events():
                 stop = 0
                 if dir == 0:
                     dir += 1
-                else:
+                elif dir == -1:
                     dir += 2
                 thread_run()
             elif event.key == SDLK_LEFT:
                 stop = 0
                 if dir == 0:
                     dir -= 1
-                else:
+                elif dir == 1:
                     dir -= 2
                 thread_run()
             elif event.key == SDLK_UP:
@@ -79,7 +79,7 @@ def handle_running_events():
             elif event.key == SDLK_LEFT:
                 dir += 1
                 stop = -1
-            elif event.key ==SDLK_UP:
+            elif event.key == SDLK_UP:
                 x, y = jump_last
 
 
@@ -121,7 +121,7 @@ while running:
     for Qbox in Qboxes:
         Qbox.draw()
     # 정지모션
-    if stop == 1:
+    if stop == 1 and jump != 1:
         character_right_stop.clip_draw(0, 2, 20, 35, x, floar)
     elif stop == -1:
         character_left_stop.clip_draw(0, 2, 20, 35, x, floar)
