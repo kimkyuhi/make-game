@@ -1,5 +1,14 @@
 from pico2d import *
 import threading
+import random
+
+class Box:
+    def __init__(self):
+        self.x, self.y = random.randint(300, 500), 100
+        self.image_question = load_image('questionbox.png')
+
+    def draw(self):
+        self.image_question.clip_draw(0, 0, 24, 29 ,self.x, self.y)
 
 def thread_run():
     global charge
@@ -63,7 +72,6 @@ def handle_running_events():
 
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:
-                print('여기계속돌아?')
                 dir -= 1
                 stop = 1
 
@@ -99,14 +107,17 @@ t = 0.0
 jump_start = x, y
 jump_middle = x, y
 jump_last = x, y
+Qboxes = [Box() for i in range(1, 3+1)]
 
 while running:
     clear_canvas()
     World1.clip_draw(0, 5, 800, 480, 400, 240)
+    for Qbox in Qboxes:
+        Qbox.draw()
     # 정지모션
-    if stop == 1: #and dir == 0:
+    if stop == 1:
         character_right_stop.clip_draw(0, 2, 20, 35, x, floar)
-    elif stop == -1: #and dir == 0:
+    elif stop == -1:
         character_left_stop.clip_draw(0, 2, 20, 35, x, floar)
     else:# walk or run and jump.
         if jump != 1:
@@ -138,7 +149,6 @@ while running:
     handle_running_events()
     walk_frame = (walk_frame + 1) % 5
     run_frame = (run_frame + 1) % 3
-    print(dir, charge)
     x += dir * 5 + charge
     delay(0.05)
 
