@@ -13,16 +13,20 @@ class Box:
 def thread_run():
     global charge
     global dir
-    run_timer = threading.Timer(0.5, thread_run)
-    run_timer.start()
-    if dir == 1 and charge < 6:
-        charge += 1
-    elif dir == -1 and charge > -6:
-        charge -= 1
+    global run_flag
+    if run_flag == False:
+        run_timer = threading.Timer(0.5, thread_run)
+        run_timer.start()
+        run_timer = True
+        if dir == 1 and charge < 6:
+            charge += 1
+        elif dir == -1 and charge > -6:
+            charge -= 1
 
-    if dir == 0 or stop != 0:
-        charge = 0
-        run_timer.cancel()
+        if dir == 0 or stop != 0:
+            run_flag = False
+            charge = 0
+            run_timer.cancel()
 
 
 
@@ -47,14 +51,14 @@ def handle_running_events():
                 stop = 0
                 if dir == 0:
                     dir += 1
-                elif dir == -1:
+                else:
                     dir += 2
                 thread_run()
             elif event.key == SDLK_LEFT:
                 stop = 0
                 if dir == 0:
                     dir -= 1
-                elif dir == 1:
+                else:
                     dir -= 2
                 thread_run()
             elif event.key == SDLK_UP:
@@ -79,7 +83,7 @@ def handle_running_events():
             elif event.key == SDLK_LEFT:
                 dir += 1
                 stop = -1
-            elif event.key == SDLK_UP:
+            elif event.key ==SDLK_UP:
                 x, y = jump_last
 
 
@@ -104,6 +108,7 @@ y = 75
 floar = 45
 walk_frame = 0
 run_frame = 0
+run_flag = False
 dir = 0 # -1 left +1 right 0 stop
 stop = 1 # -1 left +1 right 0 walk or run
 charge = 0
@@ -121,7 +126,7 @@ while running:
     for Qbox in Qboxes:
         Qbox.draw()
     # 정지모션
-    if stop == 1 and jump != 1:
+    if stop == 1:
         character_right_stop.clip_draw(0, 2, 20, 35, x, floar)
     elif stop == -1:
         character_left_stop.clip_draw(0, 2, 20, 35, x, floar)
