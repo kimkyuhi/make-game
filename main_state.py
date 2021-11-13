@@ -6,8 +6,8 @@ from pico2d import *
 import game_framework
 import game_world
 
-from boy import Boy
-from grass import Grass
+from new_mario import Mario
+from world1 import World1
 
 
 name = "MainState"
@@ -16,10 +16,10 @@ boy = None
 
 def enter():
     global boy
-    boy = Boy()
-    grass = Grass()
-    game_world.add_object(grass, 0)
-    game_world.add_object(boy, 1)
+    boy = Mario()
+    world1 = World1()
+    game_world.add_object(world1, 0)
+    game_world.add_object(Mario, 1)
 
 
 def exit():

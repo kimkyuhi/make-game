@@ -40,102 +40,100 @@ key_event_table = {
 
 class DashState:
 
-    def enter(boy, event):
+    def enter(Mario, event):
         print('ENTER DASH')
-        boy.dir = boy.velocity
+        Mario.dir = Mario.velocity
 
-    def exit(boy, event):
+    def exit(Mario, event):
         print('EXIT DASH')
         pass
 
-    def do(boy):
-        boy.frame = (boy.frame + 1) % 8
-        boy.x += boy.velocity * 2.5
-        boy.x = clamp(25, boy.x, 1600 - 25)
+    def do(Mario):
+        Mario.frame = (Mario.frame + 1) % 8
+        Mario.x += Mario.velocity * 2.5
+        Mario.x = clamp(25, Mario.x, 1600 - 25)
 
-    def draw(boy):
-        if boy.velocity == 1:
-            boy.image.clip_draw(boy.frame * 100, 100, 100, 100, boy.x, boy.y)
+    def draw(Mario):
+        if Mario.velocity == 1:
+            Mario.rimage.clip_draw(Mario.frame * 100, 100, 100, 100, Mario.x, Mario.y)
         else:
-            boy.image.clip_draw(boy.frame * 100, 0, 100, 100, boy.x, boy.y)
+            Mario.limage.clip_draw(Mario.frame * 100, 0, 100, 100, Mario.x, Mario.y)
 
 class IdleState:
 
-    def enter(boy, event):
+    def enter(Mario, event):
         if event == RIGHT_DOWN:
-            boy.velocity += RUN_SPEED_PPS
+            Mario.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            boy.velocity -= RUN_SPEED_PPS
+            Mario.velocity -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
-            boy.velocity -= RUN_SPEED_PPS
+            Mario.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            boy.velocity += RUN_SPEED_PPS
-        boy.timer = 1000
+            Mario.velocity += RUN_SPEED_PPS
+        Mario.timer = 1000
 
-    def exit(boy, event):
+    def exit(Mario, event):
         if event == SPACE:
-            boy.fire_ball()
+            Mario.fire_ball()
         pass
 
-    def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        boy.timer -= 1
-        if boy.timer == 0:
-            boy.add_event(SLEEP_TIMER)
+    def do(Mario):
+        Mario.frame = (Mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        Mario.timer -= 1
+        if Mario.timer == 0:
+            Mario.add_event(SLEEP_TIMER)
 
-    def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 100, 300, 100, 100, boy.x, boy.y)
+    def draw(Mario):
+        if Mario.dir == 1:
+            Mario.rimage.clip_draw(int(Mario.frame) * 100, 300, 100, 100, Mario.x, Mario.y)
         else:
-            boy.image.clip_draw(int(boy.frame) * 100, 200, 100, 100, boy.x, boy.y)
+            Mario.limage.clip_draw(int(Mario.frame) * 100, 200, 100, 100, Mario.x, Mario.y)
 
 
 class RunState:
 
-    def enter(boy, event):
+    def enter(Mario, event):
         if event == RIGHT_DOWN:
-            boy.velocity += RUN_SPEED_PPS
+            Mario.velocity += RUN_SPEED_PPS
         elif event == LEFT_DOWN:
-            boy.velocity -= RUN_SPEED_PPS
+            Mario.velocity -= RUN_SPEED_PPS
         elif event == RIGHT_UP:
-            boy.velocity -= RUN_SPEED_PPS
+            Mario.velocity -= RUN_SPEED_PPS
         elif event == LEFT_UP:
-            boy.velocity += RUN_SPEED_PPS
-        boy.dir = clamp(-1, boy.velocity, 1)
+            Mario.velocity += RUN_SPEED_PPS
+        Mario.dir = clamp(-1, Mario.velocity, 1)
         pass
 
-    def exit(boy, event):
+    def exit(Mario, event):
         if event == SPACE:
-            boy.fire_ball()
+            Mario.fire_ball()
 
-    def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        boy.x += boy.velocity * game_framework.frame_time
-        boy.x = clamp(25, boy.x, 1600 - 25)
+    def do(Mario):
+        Mario.frame = (Mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        Mario.x += Mario.velocity * game_framework.frame_time
+        Mario.x = clamp(25, Mario.x, 1600 - 25)
 
-   def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_draw(int(boy.frame) * 100, 100, 100, 100, boy.x, boy.y)
+    def draw(Mario):
+        if Mario.dir == 1:
+            Mario.rimage.clip_draw(int(Mario.frame) * 100, 100, 100, 100, Mario.x, Mario.y)
         else:
-            boy.image.clip_draw(int(boy.frame) * 100, 0, 100, 100, boy.x, boy.y)
-
-
+            Mario.limage.clip_draw(int(Mario.frame) * 100, 0, 100, 100, Mario.x, Mario.y)
 class SleepState:
 
-    def enter(boy, event):
-        boy.frame = 0
+    def enter(Mario, event):
+        Mario.frame = 0
 
-    def exit(boy, event):
+    def exit(Mario, event):
         pass
 
-    def do(boy):
-        boy.frame = (boy.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+    def do(Mario):
+        Mario.frame = (Mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
 
-    def draw(boy):
-        if boy.dir == 1:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, 300, 100, 100, 3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
+    def draw(Mario):
+        if Mario.dir == 1:
+            Mario.rimage.clip_composite_draw(int(Mario.frame) * 100, 300, 100, 100, 3.141592 / 2, '', Mario.x - 25, Mario.y - 25, 100, 100)
         else:
-            boy.image.clip_composite_draw(int(boy.frame) * 100, 200, 100, 100, -3.141592 / 2, '', boy.x + 25, boy.y - 25, 100, 100)
+            Mario.limage.clip_composite_draw(int(Mario.frame) * 100, 200, 100, 100, -3.141592 / 2, '', Mario.x + 25, Mario.y - 25, 100, 100)
 
 
 
@@ -152,13 +150,13 @@ next_state_table = {
     SleepState: {LEFT_DOWN: RunState, RIGHT_DOWN: RunState, LEFT_UP: RunState, RIGHT_UP: RunState, SPACE: IdleState}
 }
 
-class Boy:
+class Mario:
 
     def __init__(self):
         self.x, self.y = 0, 90
         # Boy is only once created, so instance image loading is fine
-        self.image = load_image('animation_sheet.png')
-        self.font = load_font('ENCR10B.TTF', 16)
+        self.rimage = load_image('right.png')
+        self.limage = load_image('left.png')
         self.dir = 1
         self.velocity = 0
         self.frame = 0
@@ -185,7 +183,6 @@ class Boy:
 
     def draw(self):
         self.cur_state.draw(self)
-        self.font.draw(self.x - 60, self.y + 50, '(Time: %3.2f)' % get_time(), (255, 255, 0))
 
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
