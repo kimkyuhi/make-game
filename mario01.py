@@ -45,7 +45,6 @@ def handle_running_events():
             running = False
             dir = 0
             stop = 1
-            #thread_run()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_RIGHT:
                 stop = 0
@@ -93,17 +92,11 @@ def handle_running_events():
 open_canvas(800, 480)
 character_right = load_image('right.png')
 character_left = load_image('left.png')
-character_right_stop = load_image('mario_right_stop.png')
-character_left_stop = load_image('mario_left_stop.png')
-character_right_run = load_image('mario_right_run.png')
-character_left_run = load_image('mario_left_run.png')
-character_right_jump = load_image('mario_right_jump.png')
-character_left_jump = load_image('mario_left_jump.png')
 World1 = load_image('world1-1.png')
 
 
 running = 100
-x = 100
+x = 300
 y = 75
 floar = 45
 walk_frame = 0
@@ -127,29 +120,30 @@ while running:
         Qbox.draw()
     # 정지모션
     if stop == 1:
-        character_right.clip_draw(100, 2, 20, 35, x, floar)
+        character_right.clip_draw(2, 319, 20, 35, x, floar)
     elif stop == -1:
-        character_left.clip_draw(100, 658, 20, 35, x, floar)
+        character_left.clip_draw(678, 319, 20, 35, x, floar)
     else:# walk or run and jump.
         if jump != 1:
             if dir > 0:
                 if charge == 6:#run
-                    character_right_run.clip_draw(run_frame * 100, 2, 19, 35, x, floar)
+
+                    character_right.clip_draw(run_frame * 20, 319, 19, 35, x, floar)
                 else:#walk
-                    character_right.clip_draw(walk_frame * 19, 2, 20, 35, x, floar)
+                    character_right.clip_draw(walk_frame * 20 + 3, 319, 20, 35, x, floar)
             elif dir < 0:
-                if charge == -6:
-                    character_left_run.clip_draw(run_frame * 20, 2, 20, 35, x, floar)
-                else:
-                    character_left.clip_draw(walk_frame * 20, 2, 20, 35, x, floar)
+                if charge == -6:#run
+                    character_left.clip_draw(run_frame * 20 + 493, 319, 20, 35, x, floar)
+                else:#walk
+                    character_left.clip_draw(walk_frame * 20 + 597, 319, 20, 35, x, floar)
         else:#jump
             t = i / 100
             x = (2 * t ** 2 - 3 * t + 1) * jump_start[0] + (-4 * t ** 2 + 4 * t) * jump_middle[0] + (2 * t ** 2 - t) * jump_last[0]
             y = (2 * t ** 2 - 3 * t + 1) * jump_start[1] + (-4 * t ** 2 + 4 * t) * jump_middle[1] + (2 * t ** 2 - t) * jump_last[1]
             if dir > 0:
-                character_right_jump.clip_draw(0, 2, 20, 35, x, y)
+                character_right.clip_draw(63, 319, 20, 35, x, y)
             elif dir < 0:
-                character_left_jump.clip_draw(0, 2, 20, 35, x, y)
+                character_left.clip_draw(617, 319, 20, 35, x, y)
 
             i += 10
             if t == 1:
