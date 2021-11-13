@@ -6,7 +6,7 @@ import game_world
 
 # Boy Run Speed
 # fill expressions correctly
-PIXEL_PER_METER = (10.0 / 0.3)
+PIXEL_PER_METER = (5.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -16,7 +16,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # fill expressions correctly
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 5
 
 
 
@@ -78,16 +78,16 @@ class IdleState:
         pass
 
     def do(Mario):
-        Mario.frame = (Mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+       # Mario.frame = (Mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         Mario.timer -= 1
         if Mario.timer == 0:
             Mario.add_event(SLEEP_TIMER)
 
     def draw(Mario):
         if Mario.dir == 1:
-            Mario.rimage.clip_draw(int(Mario.frame) * 100, 300, 100, 100, Mario.x, Mario.y)
+            Mario.rimage.clip_draw(2, 319, 20, 35, Mario.x, Mario.y)
         else:
-            Mario.limage.clip_draw(int(Mario.frame) * 100, 200, 100, 100, Mario.x, Mario.y)
+            Mario.limage.clip_draw(678, 319, 20, 35, Mario.x, Mario.y)
 
 
 class RunState:
@@ -109,15 +109,16 @@ class RunState:
             Mario.fire_ball()
 
     def do(Mario):
-        Mario.frame = (Mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        Mario.frame = (Mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 5
         Mario.x += Mario.velocity * game_framework.frame_time
         Mario.x = clamp(25, Mario.x, 1600 - 25)
 
     def draw(Mario):
         if Mario.dir == 1:
-            Mario.rimage.clip_draw(int(Mario.frame) * 100, 100, 100, 100, Mario.x, Mario.y)
+            Mario.rimage.clip_draw(int(Mario.frame) * 20 + 3, 319, 20, 35, Mario.x, Mario.y)
         else:
-            Mario.limage.clip_draw(int(Mario.frame) * 100, 0, 100, 100, Mario.x, Mario.y)
+            Mario.limage.clip_draw(int(Mario.frame) * 20 + 597, 319, 20, 35, Mario.x, Mario.y)
+
 class SleepState:
 
     def enter(Mario, event):
@@ -131,7 +132,7 @@ class SleepState:
 
     def draw(Mario):
         if Mario.dir == 1:
-            Mario.rimage.clip_composite_draw(int(Mario.frame) * 100, 300, 100, 100, 3.141592 / 2, '', Mario.x - 25, Mario.y - 25, 100, 100)
+            Mario.rimage.clip_composite_draw(int(Mario.frame) * 20 + 3, 300, 100, 100, 3.141592 / 2, '', Mario.x - 25, Mario.y - 25, 100, 100)
         else:
             Mario.limage.clip_composite_draw(int(Mario.frame) * 100, 200, 100, 100, -3.141592 / 2, '', Mario.x + 25, Mario.y - 25, 100, 100)
 

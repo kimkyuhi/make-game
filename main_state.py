@@ -12,14 +12,14 @@ from world1 import World1
 
 name = "MainState"
 
-boy = None
+new_mario = None
 
 def enter():
-    global boy
-    boy = Mario()
+    global new_mario
+    new_mario = Mario()
     world1 = World1()
     game_world.add_object(world1, 0)
-    game_world.add_object(Mario, 1)
+    game_world.add_object(new_mario, 1)
 
 
 def exit():
@@ -41,7 +41,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         else:
-            boy.handle_event(event)
+            new_mario.handle_event(event)
 
 
 def update():

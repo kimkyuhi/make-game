@@ -8,5 +8,5 @@ class World1:
         pass
 
     def draw(self):
-        self.image.draw(400, 30)
-        self.image.draw(1200, 30)
+        self.image.clip_draw(0, 0, 800, 480, 400, 240)
+        #self.image.draw(1200, 30)
