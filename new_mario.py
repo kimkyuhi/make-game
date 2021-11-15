@@ -6,7 +6,7 @@ import game_world
 
 # Boy Run Speed
 # fill expressions correctly
-PIXEL_PER_METER = (5.0 / 0.3)
+PIXEL_PER_METER = (3.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
@@ -49,8 +49,9 @@ class DashState:
         pass
 
     def do(Mario):
-        Mario.frame = (Mario.frame + 1) % 8
-        Mario.x += Mario.velocity * 2.5
+        #Mario.frame = (Mario.frame + 1) % 8
+        Mario.frame = (Mario.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
+        Mario.x += Mario.velocity * game_framework.frame_time * 2
         Mario.x = clamp(25, Mario.x, 1600 - 25)
 
     def draw(Mario):
@@ -85,9 +86,9 @@ class IdleState:
 
     def draw(Mario):
         if Mario.dir == 1:
-            Mario.rimage.clip_draw(2, 319, 20, 35, Mario.x, Mario.y)
+            Mario.rimage.clip_draw(int(Mario.frame) * 20 + 3, 319, 20, 35, Mario.x, Mario.y)
         else:
-            Mario.limage.clip_draw(678, 319, 20, 35, Mario.x, Mario.y)
+            Mario.limage.clip_draw(int(Mario.frame) * 20 + 597, 319, 20, 35, Mario.x, Mario.y)
 
 
 class RunState:
@@ -154,13 +155,14 @@ next_state_table = {
 class Mario:
 
     def __init__(self):
-        self.x, self.y = 0, 90
+        self.x, self.y = 0, 45
         # Boy is only once created, so instance image loading is fine
         self.rimage = load_image('right.png')
         self.limage = load_image('left.png')
         self.dir = 1
         self.velocity = 0
         self.frame = 0
+        self.dash_frame = 0
         self.event_que = []
         self.cur_state = IdleState
         self.cur_state.enter(self, None)
