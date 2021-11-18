@@ -8,16 +8,39 @@ import game_world
 
 from new_mario import Mario
 from world1 import World1
+from box import Qbox
 
 
 name = "MainState"
 
 new_mario = None
+world1 = None
+Qboxes = []
+
+
+def collide(a,b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+    if left_a > right_b:
+        return False
+    if right_a < left_b:
+        return False
+    if top_a < bottom_b:
+        return False
+    if bottom_a > top_b:
+        return False
+
+    return True
 
 def enter():
     global new_mario
+    global world1
+
     new_mario = Mario()
     world1 = World1()
+    global Qboxes
+    Qboxes = [Qbox() for i in range(10)]
+    game_world.add_objects(Qboxes, 1)
     game_world.add_object(world1, 0)
     game_world.add_object(new_mario, 1)
 
@@ -47,8 +70,10 @@ def handle_events():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    delay(0.01)
-    # fill here
+    for box in Qboxes:
+        if collide(new_mario, box):
+            Qboxes.remove(box)
+            game_world.remove_object(box)
 
 
 def draw():
